@@ -19,6 +19,7 @@ function App() {
   const [unseenMessagesCount, setUnseenMessagesCount] = useState(0);
   const [lastSeenMessageTimestamp, setLastSeenMessageTimestamp] = useState(null);
   const chatBoxRef = useRef(null);
+  const [hideCounter, setHideCounter] = useState(false);
 
   useEffect(() => {
     async function initAuth() {
@@ -67,10 +68,26 @@ function App() {
   }, [messages]);
 
   useEffect(() => {
-    if (!isAtBottom()) {
-      updateUnseenMessagesCount();
+    const handleScroll = () => {
+      if (isAtBottom()) {
+        setUnseenMessagesCount(0);
+        setLastSeenMessageTimestamp(
+          messages.length > 0 ? messages[messages.length - 1].timestamp : null
+        );
+      }
+    };
+
+    const chatBox = chatBoxRef.current;
+    if (chatBox) {
+      chatBox.addEventListener('scroll', handleScroll);
     }
-  }, [chatBoxRef.current?.scrollTop]);
+
+    return () => {
+      if (chatBox) {
+        chatBox.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, [messages]);
 
   const generateNpcUsername = () => {
     const storedNpcId = sessionStorage.getItem('npcId');
@@ -108,7 +125,8 @@ function App() {
       if (newMessages.length > 0) {
         setMessages(msgs);
         if (!isAtBottom() && !scrollOnNextUpdate) {
-          setUnseenMessagesCount(newMessages.length);
+          setUnseenMessagesCount((prevCount) => prevCount + newMessages.length);
+          hideCounterTemporarily();
         }
       }
     } catch (error) {
@@ -144,10 +162,19 @@ function App() {
       const unseenCount = messages.filter(
         (msg) => !lastSeenMessageTimestamp || msg.timestamp > lastSeenMessageTimestamp
       ).length;
-      setUnseenMessagesCount(unseenCount);
+      if (unseenCount !== unseenMessagesCount) {
+        setUnseenMessagesCount(unseenCount);
+      }
     } else {
       setUnseenMessagesCount(0);
     }
+  };
+
+  const hideCounterTemporarily = () => {
+    setHideCounter(true);
+    setTimeout(() => {
+      setHideCounter(false);
+    }, 200);
   };
 
   const handleLogin = async () => {
@@ -256,7 +283,7 @@ function App() {
         />
         <button onClick={handleSendMessage}>Send</button>
         <button onClick={handleScrollToNew}>Scroll to New</button>
-        {unseenMessagesCount > 0 && (
+        {!hideCounter && unseenMessagesCount > 0 && (
           <span className="unseen-counter">({unseenMessagesCount} new)</span>
         )}
       </div>
