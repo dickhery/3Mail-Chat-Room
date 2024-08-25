@@ -229,6 +229,10 @@ function App() {
     };
 
     const handleCreateUsername = async () => {
+        setShowCreateUsername(true); // Show the input and submit button
+    };
+
+    const handleSubmitCreateUsername = async () => {
         if (newUsername.trim() !== '') {
             const confirm = window.confirm(
                 `Are you sure you want to create the username: ${newUsername}? This cannot be changed later.`
@@ -251,6 +255,10 @@ function App() {
     };
 
     const handleChangeUsername = async () => {
+        setShowChangeUsername(true); // Show the input and submit button
+    };
+
+    const handleSubmitChangeUsername = async () => {
         if (newUsername.trim() !== '') {
             const confirm = window.confirm(
                 `Are you sure you want to change your username to: ${newUsername}?`
@@ -312,29 +320,28 @@ function App() {
             ) : (
                 <div>
                     <button onClick={handleLogout}>Logout</button>
-                    {showCreateUsername && (
-                        <button onClick={() => setShowCreateUsername(false)}>Create Username</button>
-                    )}
-                    {!showCreateUsername && !username && (
-                        <div>
+                    {showCreateUsername ? (
+                        <div className="create-username">
                             <input
                                 type="text"
                                 value={newUsername}
                                 onChange={(e) => setNewUsername(e.target.value)}
                                 placeholder="Choose your username..."
                             />
-                            <button onClick={handleCreateUsername}>Submit</button>
+                            <button onClick={handleSubmitCreateUsername}>Submit</button>
                         </div>
+                    ) : (
+                        <button onClick={handleCreateUsername}>Create Username</button>
                     )}
                     {showChangeUsername && (
-                        <div>
+                        <div className="change-username">
                             <input
                                 type="text"
                                 value={newUsername}
                                 onChange={(e) => setNewUsername(e.target.value)}
                                 placeholder="Change your username..."
                             />
-                            <button onClick={handleChangeUsername}>Submit</button>
+                            <button onClick={handleSubmitChangeUsername}>Submit</button>
                         </div>
                     )}
                 </div>

@@ -10,9 +10,10 @@
    - Users who do not log in are automatically assigned an NPC-style username (e.g., NPC-1234) to participate in the chat.
 
 ### 2. **Username Management**
-   - **Create Username:** 
-     - Users can create a custom username after logging in.
-     - The "Create Username" button is displayed initially. Upon clicking, an input field and "Submit" button appear to allow the user to choose their username.
+   - **Create Username (Work in Progress):** 
+     - Currently, when users log in, the "Logout" button is displayed with a text input box for creating a username located directly below it.
+     - Below the text input box is a "Submit" button that allows users to create a new username.
+     - The plan is to improve the flow so that the "Create Username" button appears first, and only after clicking it, the text input and "Submit" buttons will be displayed.
    - **Change Username:** 
      - After creating a username, users must wait 24 hours before they can change it.
      - The "Change Username" button becomes visible after 24 hours have passed since the last username change or creation.
@@ -59,7 +60,7 @@ To run the project locally, follow these steps:
 
 1. **Clone the repository:**
    ```bash
-   git clone <repository_url>
+   git clone https://github.com/dickhery/3Mail-Chat-Room
    cd 3Mail-Chat-Room
    ```
 
@@ -68,21 +69,32 @@ To run the project locally, follow these steps:
    npm install
    ```
 
-3. **Start the development server:**
+3. **Place your own canisters in the `canister_ids.json` file:**
+   - Before deploying on the mainnet, ensure that you update the `canister_ids.json` file with your own canister IDs.
+
+4. **Hardcode the admin PID in the `main.mo` file:**
+   - Update the `allowedAdmins` array in the `main.mo` file with your admin Principal ID for admin access.
+
+5. **Start the development server:**
    ```bash
    npm start
    ```
 
-4. **Deploy to the Internet Computer:**
+6. **Deploy to the Internet Computer:**
    - Ensure you have `dfx` installed.
    - Deploy the frontend and backend canisters:
      ```bash
      dfx deploy
      ```
 
+## Live Demo
+
+You can try this app running live on the blockchain at the following URL:  
+[3Mail Chat Room Live](https://bnze3-uyaaa-aaaam-adblq-cai.icp0.io/)
+
 ## Future Improvements
 
-- **Continued UI Enhancements:** Further refinement of the user interface to improve accessibility and user experience.
+- **Continuing UI Enhancements:** Further refinement of the user interface to improve accessibility and user experience.
 - **Expanded Admin Features:** Additional tools for admins to manage chat content and users.
 - **Localization Support:** Plans to support multiple languages in the chat room.
 - **Advanced Analytics:** Implementing analytics to track usage and interactions within the chat.
