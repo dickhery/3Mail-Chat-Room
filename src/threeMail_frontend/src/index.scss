@@ -36,7 +36,7 @@ input, textarea {
   max-height: 300px;
   overflow-y: scroll;
   margin-bottom: 20px;
-  font-size: 1rem; /* Smaller font size for messages */
+  font-size: 1rem;
 }
 
 .chat-message {
@@ -71,8 +71,19 @@ input, textarea {
   font-size: 1.2rem;
 }
 
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.username-input {
+  display: flex;
+  gap: 10px;
+}
+
 @media (max-width: 600px) {
   .footer {
-    text-align: center;
+      text-align: center;
   }
 }
