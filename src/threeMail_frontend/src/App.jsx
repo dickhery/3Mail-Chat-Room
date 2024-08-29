@@ -21,6 +21,7 @@ function App() {
     const [lastSeenMessageTimestamp, setLastSeenMessageTimestamp] = useState(null);
     const chatBoxRef = useRef(null);
     const [hideCounter, setHideCounter] = useState(false);
+    const [isSending, setIsSending] = useState(false); // New state to control Send button visibility
     const [isAdmin, setIsAdmin] = useState(false);
     const adminPIDs = [
         "lhqjs-2526y-iveq4-ehfgj-fqx72-3s4pk-wrr5u-bwdb7-inxiv-vnv32-pqe"
@@ -216,12 +217,15 @@ function App() {
     const handleSendMessage = async () => {
         if (messageText.trim() !== '' && username.trim() !== '') {
             try {
+                setIsSending(true); // Hide the Send button
                 await chatRoomActor.sendMessage(username, messageText);
                 setMessageText('');
                 setScrollOnNextUpdate(true);
                 await fetchMessages(chatRoomActor);
             } catch (error) {
                 console.error('Failed to send message:', error);
+            } finally {
+                setIsSending(false); // Show the Send button again
             }
         } else {
             console.error('Message text or username is empty.');
@@ -369,7 +373,9 @@ function App() {
                     onChange={(e) => setMessageText(e.target.value)}
                     placeholder="Type your message..."
                 />
-                <button onClick={handleSendMessage}>Send</button>
+                {!isSending && (
+                    <button onClick={handleSendMessage}>Send</button>
+                )}
                 <button onClick={handleScrollToNew}>Scroll to New</button>
                 {!hideCounter && unseenMessagesCount > 0 && (
                     <span className="unseen-counter">({unseenMessagesCount} new)</span>
